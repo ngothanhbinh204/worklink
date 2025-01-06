@@ -26,7 +26,6 @@ class User extends Authenticatable
         'cover_photo',
         'headline',
         'bio',
-        'website',
         'location',
         'active',
         'role',
@@ -34,7 +33,7 @@ class User extends Authenticatable
     ];
 
     // Chỉ định các trường không được gán hàng loạt
-    protected $guarded = ['id', 'created_at', 'updated_at', 'password', 'remember_token', 'email_verified_at'];
+    // protected $guarded = ['id', 'created_at', 'updated_at', 'password', 'remember_token', 'email_verified_at'];
 
     protected $attributes = [
         'active' => true,
@@ -117,5 +116,13 @@ class User extends Authenticatable
         return $this->sentConnections->merge($this->receivedConnections);
     }
 
+    public function roles() {
+        return $this->belongsToMany(Role::class, 'role_user');
+    }
+
+    // Kiểm tra user có vai trò cụ thể không
+    public function hasRole($role) {
+        return $this->roles->contains('name', $role);
+    }
 
 }
