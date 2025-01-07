@@ -33,5 +33,6 @@ class RolesTableSeeder extends Seeder
             'name' => 'employer',
             'description' => 'Người sử dụng lao động', // Người sử dụng lao động (công ty) : Quản lý cả quy trình tuyển dụng và nhân viên.
         ]);
+
     }
 }

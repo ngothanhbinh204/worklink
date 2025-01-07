@@ -15,7 +15,9 @@ class UserController extends Controller
     }
     public function index()
     {
-        return $this->userServices->getAllUsers();
+        $relations = ['basicInfo', 'contactInfo'];
+        $user = $this->userServices->getAllUserWithRelations($relations);
+        return response()->json($user);
     }
 
 

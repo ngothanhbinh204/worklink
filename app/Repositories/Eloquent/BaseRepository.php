@@ -3,7 +3,6 @@
 namespace App\Repositories\Eloquent;
 use App\Repositories\Contracts\BaseRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
-
 abstract class BaseRepository implements BaseRepositoryInterface
 {
     protected $model;
@@ -34,7 +33,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
             $user->update($data);
             return $user;
         }
-
         return null;
     }
 
