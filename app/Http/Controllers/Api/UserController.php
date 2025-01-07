@@ -23,10 +23,23 @@ class UserController extends Controller
     public function index()
     {
 
-        $role = Role::create(['name' => 'admin']);
-        $relations = ['basicInfo', 'contactInfo'];
-        $user = $this->userServices->getAllUserWithRelations($relations);
-        return response()->json($user);
+
+        $users = User::with('roles')->get(); // Lấy tất cả user và roles của họ
+
+        foreach ($users as $user) {
+            echo $user->name . ' có các roles: ';
+            foreach ($user->roles as $role) {
+                echo $role->name . ' ';
+            }
+            echo "\n";
+        }
+
+        // return response()->json($roles);
+
+        // $role = Role::create(['name' => 'admin']);
+        // $relations = ['basicInfo', 'contactInfo'];
+        // $user = $this->userServices->getAllUserWithRelations($relations);
+        // return response()->json($user);
     }
 
     public function create()

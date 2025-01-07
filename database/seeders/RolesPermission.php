@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Models\User;
 class RolesPermission extends Seeder
 {
     /**
@@ -14,46 +15,36 @@ class RolesPermission extends Seeder
     public function run(): void
     {
         //
+        // Tạo danh sách permissions
+        $permissions = [
+            'view_users', 'create_user', 'update_user', 'delete_user',
+            'ban_user', 'unban_user',
+            'view_user_profile', 'edit_user_profile', 'verify_user',
+            'assign_roles', 'remove_roles', 'view_roles',
+            'view_posts', 'delete_user_post', 'approve_user_post', 'flag_user_post',
+            'view_user_activity', 'delete_user_comment', 'ban_user_interaction'
+        ];
 
-        // Tạo Permissions
-        Permission::create(['name' => 'create_post', 'guard_name' => 'api']);
-        Permission::create(['name' => 'comment', 'guard_name' => 'api']);
-        Permission::create(['name' => 'like_post', 'guard_name' => 'api']);
-        Permission::create(['name' => 'apply_for_job', 'guard_name' => 'api']);
-        Permission::create(['name' => 'create_job_post', 'guard_name' => 'api']);
-        Permission::create(['name' => 'view_applicants', 'guard_name' => 'api']);
-        Permission::create(['name' => 'manage_users', 'guard_name' => 'api']);
-        Permission::create(['name' => 'manage_roles', 'guard_name' => 'api']);
+        // Duyệt và tạo từng permission
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'api']);
+        }
 
-        // Tạo Roles
-        Role::create(['name' => 'admin', 'guard_name' => 'api']);
-        Role::create(['name' => 'recruiter', 'guard_name' => 'api']);
-        Role::create(['name' => 'job_seeker', 'guard_name' => 'api']);
-        Role::create(['name' => 'basic_user', 'guard_name' => 'api']);
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $userRole = Role::firstOrCreate(['name' => 'user']);
+        // Gán quyền cho vai trò admin
+        $adminRole->syncPermissions($permissions);
+        // Tạo tài khoản admin mẫu
+        $admin = User::where('email', 'admin@gmail.com')->first();
+        if ($admin) {
+            $admin->assignRole($adminRole);
+        }
 
-        // Gán Permissions cho Roles
-        // Admin
+        // Tạo user
 
-        $adminRole = Role::findByName('admin', 'api');
-        $recuitRole = Role::findByName('recruiter', 'api');
-        $jobSeekerRole = Role::findByName('job_seeker', 'api');
-        $basicUserRole = Role::findByName('basic_user', 'api');
-
-        // Gán quyền
-        $adminRole->givePermissionTo([
-            'manage_users', 'manage_roles', 'create_job_post', 'view_applicants'
-        ]);
-
-        $recuitRole->givePermissionTo([
-            'create_job_post', 'view_applicants'
-        ]);
-
-        $jobSeekerRole->givePermissionTo([
-             'create_post', 'comment', 'like_post','apply_for_job'
-        ]);
-
-        $basicUserRole->givePermissionTo([
-            'create_post', 'comment', 'like_post'
-        ]);
+        $user = User::where('email', 'user@gmail.com')->first();
+        if ($user) {
+            $user->assignRole($userRole);
+        }
     }
 }
