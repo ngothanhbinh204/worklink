@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Repositories\Eloquent;
+
+use App\Models\Role;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Models\User;
 
@@ -22,7 +24,24 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
        return $this->model->with($relations)->get();
     }
 
+    public function createUserWithRelations(array $userData, array $basicInfo, array $contactInfo)
+    {
+        $user = $this->model->create($userData);
 
+        // Tạo basic_info và contact_info cho user
+        $user->basicInfo()->create($basicInfo);
+        $user->contactInfo()->create($contactInfo);
 
+        // mặc định role là 'user
+        $role = Role::where('name', 'user')->first();
+        if($role && !$user->roles()->where('role_id', $role->id)->exists()) {
+            $user->roles()->syncWithoutDetaching([$role->id]);
+        }
+        return $user;
+    }
+
+    public function getUser($id, $relations = []) {
+        return $this->model->with($relations)->find($id);
+    }
 
 }

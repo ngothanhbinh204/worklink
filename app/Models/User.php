@@ -28,8 +28,6 @@ class User extends Authenticatable
         'bio',
         'location',
         'active',
-        'role',
-
     ];
 
     // Chỉ định các trường không được gán hàng loạt
@@ -37,7 +35,6 @@ class User extends Authenticatable
 
     protected $attributes = [
         'active' => true,
-        'role' => 'user',
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -117,12 +114,16 @@ class User extends Authenticatable
     }
 
     public function roles() {
-        return $this->belongsToMany(Role::class, 'role_user');
+        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
     }
 
     // Kiểm tra user có vai trò cụ thể không
     public function hasRole($role) {
         return $this->roles->contains('name', $role);
+    }
+
+    public function isAdmin() {
+        return $this->hasRole('admin');
     }
 
 }

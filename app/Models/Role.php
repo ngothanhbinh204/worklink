@@ -14,6 +14,6 @@ class Role extends Model
     // Mối quan hệ N-N với User
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'role_user', 'role_id', 'user_id');
     }
 }
