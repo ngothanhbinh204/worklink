@@ -29,7 +29,7 @@ return new class extends Migration {
 
             // Trạng thái & vai trò
             $table->boolean('active')->default(true); // Trạng thái hoạt động
-            $table->string('role')->default('user'); // Vai trò (ví dụ: admin, user)
+            // $table->string('role')->default('user'); // Vai trò (ví dụ: admin, user)
 
             // Indexes tối ưu tìm kiếm
             if (!Schema::hasIndex('users', 'users_email_index')) {
@@ -61,7 +61,7 @@ return new class extends Migration {
             if (Schema::hasIndex('users', 'users_active_index')) {
                 $table->dropIndex('users_active_index');
             }
-            $table->dropColumn(['first_name', 'last_name', 'phone', 'avatar', 'cover_photo', 'headline', 'bio', 'location', 'active', 'role']);
+            $table->dropColumn(['first_name', 'last_name', 'phone', 'avatar', 'cover_photo', 'headline', 'bio', 'location', 'active']);
         });
     }
 };

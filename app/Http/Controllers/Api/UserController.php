@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 class UserController extends Controller
 {
     public $userServices;
@@ -19,9 +22,8 @@ class UserController extends Controller
     }
     public function index()
     {
-        // $user = Auth::user();
-        // $this->authorize('create', User::class);
 
+        $role = Role::create(['name' => 'admin']);
         $relations = ['basicInfo', 'contactInfo'];
         $user = $this->userServices->getAllUserWithRelations($relations);
         return response()->json($user);

@@ -7,11 +7,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable;
+    // Sử dụng trait HasApiTokens để xác thực người dùng
+    use HasApiTokens;
+    // Sử dụng trait Notifiable để gửi thông báo - HasFactory để tạo dữ liệu mẫu
+    use HasFactory, Notifiable;
+    // Sử dụng trait HasRoles phân quyền
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -113,14 +119,14 @@ class User extends Authenticatable
         return $this->sentConnections->merge($this->receivedConnections);
     }
 
-    public function roles() {
-        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
-    }
+    // public function roles() {
+    //     return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+    // }
 
-    // Kiểm tra user có vai trò cụ thể không
-    public function hasRole($role) {
-        return $this->roles->contains('name', $role);
-    }
+    // // Kiểm tra user có vai trò cụ thể không
+    // public function hasRole($role) {
+    //     return $this->roles->contains('name', $role);
+    // }
 
     public function isAdmin() {
         return $this->hasRole('admin');
