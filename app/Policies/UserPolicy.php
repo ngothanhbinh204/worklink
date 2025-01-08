@@ -17,16 +17,33 @@ class UserPolicy
      * kiểm tra quyền Admin
      */
 
-    public function view(User $user, User $targetUser)
+    // Kiểm tra quyền xem danh sách người dùng
+    public function viewAny(User $authUser)
     {
-       return $user->isAdmin() || $user->id === $targetUser->id;
+        return $authUser->hasPermissionTo('manage users');
     }
 
-    public function create(User $user)
+    // Kiểm tra quyền xem thông tin chi tiết 1 người dùng  - nếu người dùng đó là chính họ (id) hoặc có quyền xem user
+    public function view(User $authUser, User $user )
     {
-        // Kiểm tra quyền tạo user
-        return $user->role === 'admin';
+        return $authUser->id === $user->id || $authUser->hasPermissionTo('view user');
     }
+
+    public function create(User $authUser)
+    {
+       return $authUser->hasPermissionTo('manage users') || $authUser->hasRole('Admin');
+    }
+
+    public function update(User $authUser, User $user)
+    {
+        return $authUser->id === $user->id || $authUser->hasPermissionTo('update users');
+    }
+
+    public function delete(User $authUser, User $user)
+    {
+        return $authUser->id === $user->id || $authUser->hasPermissionTo('delete users');
+    }
+
 
     public function viewAsAdmin(User $user)
     {
@@ -52,14 +69,5 @@ class UserPolicy
         return $user->hasRole('employer');
     }
 
-    public function update(User $user, User $targetUser)
-    {
-        // Admin có thể chỉnh sửa bất kỳ người dùng nào
-        if ($user->role === 'admin') {
-            return true;
-        }
 
-        // Người dùng chỉ chỉnh sửa info của chính họ
-        return $user->id === $targetUser->id;
-    }
 }

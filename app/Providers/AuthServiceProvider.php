@@ -16,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      * Register services.
      */
     protected $policies = [
-        User::class => UserPolicy::class,
+        \App\Models\User::class => \App\Policies\UserPolicy::class,
     ];
 
 
@@ -35,13 +35,13 @@ class AuthServiceProvider extends ServiceProvider
         // Passport::routes();
 
         // ROLE
-        Gate::define('admin', function (User $user) {
-            return $user->is_admin;
-        });
+        // Gate::define('admin', function (User $user) {
+        //     return $user->is_admin;
+        // });
 
-        Gate::define('user', function (User $user) {
-            return $user->role === 'user';
-        });
+        // Gate::define('user', function (User $user) {
+        //     return $user->role === 'user';
+        // });
 
         // PERMISSION
 

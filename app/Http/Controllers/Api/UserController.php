@@ -8,13 +8,17 @@ use App\Http\Requests\User\UserStoreRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class UserController extends Controller
 {
+    use AuthorizesRequests;
     public $userServices;
     public function __construct(UserServices $userServices)
     {
@@ -24,22 +28,10 @@ class UserController extends Controller
     {
 
 
-        $users = User::with('roles')->get(); // Lấy tất cả user và roles của họ
-
-        foreach ($users as $user) {
-            echo $user->name . ' có các roles: ';
-            foreach ($user->roles as $role) {
-                echo $role->name . ' ';
-            }
-            echo "\n";
-        }
-
-        // return response()->json($roles);
-
-        // $role = Role::create(['name' => 'admin']);
-        // $relations = ['basicInfo', 'contactInfo'];
-        // $user = $this->userServices->getAllUserWithRelations($relations);
-        // return response()->json($user);
+        $this->authorize('viewAny', User::class);
+        $relations = ['basicInfo', 'contactInfo'];
+        $user = $this->userServices->getAllUserWithRelations($relations);
+        return response()->json(['data' => $user, 'mess' => "admin"], 200);
     }
 
     public function create()
@@ -48,6 +40,7 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
+        $this->authorize('create', User::class);
         $data = $request->validated();
         $user = $this->userServices->createUserWithRelations($data);
         return response()->json(['message' => 'Tạo người dùng thành công', 'data' => $user], 201);
