@@ -17,10 +17,8 @@ class RolesPermission extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         //
-        // Define Permissions
         $permissions = ['manage users', 'manage roles', 'manage jobs', 'create job posts', 'edit own job posts', 'delete own job posts', 'view applications', 'send messages', 'moderate content', 'view premium content'];
 
-        // Duyệt và tạo từng permission
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'api']);
         }

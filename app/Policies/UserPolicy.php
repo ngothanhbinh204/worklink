@@ -44,30 +44,12 @@ class UserPolicy
         return $authUser->id === $user->id || $authUser->hasPermissionTo('delete users');
     }
 
-
-    public function viewAsAdmin(User $user)
+    public function managerConection(User $authUser, User $user)
     {
-        // Kiểm tra quyền xem user
-        return $user->hasRole('admin');
+        return $authUser->id !== $user->id;
     }
 
-    public function viewAsUser(User $user)
-    {
-        // Kiểm tra quyền xem user
-        return $user->hasRole('user');
-    }
 
-    public function viewAsRecruiter(User $user)
-    {
-        // Kiểm tra quyền xem user
-        return $user->hasRole('recruiter');
-    }
-
-    public function Employer(User $user)
-    {
-        // Kiểm tra quyền xem user
-        return $user->hasRole('employer');
-    }
 
 
 }
