@@ -48,17 +48,16 @@ class UserController extends Controller
 
     public function show(string $id)
     {
-
         $relations = ['basicInfo', 'contactInfo'];
         $user = $this->userServices->getUser($id, $relations);
-        return response()->json($user);
+        return new UserResource($user);
     }
 
     public function showUser($id)
     {
         $relations = ['basicInfo', 'contactInfo'];
         $user = $this->userServices->getUser($id, $relations);
-        return response()->json($user);
+        return new UserResource($user);
     }
 
     public function edit(string $id)

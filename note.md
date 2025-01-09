@@ -53,3 +53,12 @@ if ($user->hasAllPermissions(['edit-posts', 'delete-posts'])) {
 }
 
 $allPermissions = $user->getAllPermissions(); // Lấy tất cả permissions của user
+
+
+Người dùng: Đăng ký, đăng nhập, hồ sơ cá nhân (profile).
+Kết nối xã hội: Kết bạn, theo dõi, đề xuất bạn bè.
+Bài viết: Đăng bài, like, bình luận, chia sẻ.
+Thông báo: Real-time notifications (tin nhắn, kết bạn, phản hồi).
+Tin nhắn: Hệ thống chat real-time.
+Công việc: Đăng tin tuyển dụng, tìm kiếm việc làm, ứng tuyển.
+Tìm kiếm: Tìm kiếm người dùng, bài viết, công việc.

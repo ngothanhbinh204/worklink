@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UserRegister;
 use App\Http\Requests\Userlogin;
+use App\Http\Resources\UserResource;
 
 use Illuminate\Support\Facades\Http;
 
@@ -35,17 +36,33 @@ class AuthController extends Controller
             $tokenResult = $user->createToken('Worklink Access Token');
             $token = $tokenResult->token;
             $token->save();
-            return response()->json(['user' => $user, 'token' => $token,  'access_token' => $tokenResult->accessToken,
-            'token_type' => 'Bearer',
-            'expires_at' => $tokenResult->token->expires_at, 'msg' => 'Đăng nhập thành công'], 200);
+            return response()->json(['user' => $user, 'token' => $token, 'access_token' => $tokenResult->accessToken, 'token_type' => 'Bearer', 'expires_at' => $tokenResult->token->expires_at, 'msg' => 'Đăng nhập thành công'], 200);
         } else {
             return response()->json(['msg' => 'Đăng nhập thất bại'], 211);
         }
     }
 
+    public function logout(Request $request)
+    {
+        // Kiểm tra xem người dùng có được xác thực không
+    if ($request->user()) {
+        // Xóa token của người dùng
+        $request->user()->token()->revoke();
+        return response()->json([
+            'message' => 'Đăng xuất thành công'
+        ], 200);
+    }
+
+    // Nếu người dùng không được xác thực
+    return response()->json([
+        'message' => 'Người dùng chưa được xác thực'
+    ], 401);
+    }
+
     public function getMe()
     {
-        $user = Auth::user();
+        $user = User::with('roles')->find(Auth::id());
+        return new UserResource($user);
         return response()->json(['user' => $user, 'msg' => 'Đăng nhập thành công'], 200);
     }
 
