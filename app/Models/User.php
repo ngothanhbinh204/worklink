@@ -28,7 +28,7 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        'avatar',
+        // 'avatar',
         'cover_photo',
         'headline',
         'bio',
@@ -119,14 +119,49 @@ class User extends Authenticatable
         return $this->sentConnections->merge($this->receivedConnections);
     }
 
-    // public function roles() {
-    //     return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
-    // }
+    public function avatars()
+    {
+        return $this->hasMany(UserAvatar::class);
+    }
 
-    // // Kiểm tra user có vai trò cụ thể không
-    // public function hasRole($role) {
-    //     return $this->roles->contains('name', $role);
-    // }
+    public function Courses()
+    {
+        return $this->hasMany(UserCourse::class);
+    }
+
+    public function coverImage()
+    {
+        return $this->hasMany(UserCoverImage::class);
+    }
+
+    public function honorsAwards()
+    {
+        return $this->hasMany(UserHonorsAward::class);
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(UserProject::class);
+    }
+
+    public function publications()
+    {
+        return $this->hasMany(UserPublication::class);
+    }
+
+    public function givenRecommendations()
+    {
+        return $this->hasMany(UserRecommendation::class, 'giver_id');
+    }
+     public function receivedRecommendations()
+   {
+       return $this->hasMany(UserRecommendation::class, 'receiver_id');
+   }
+
+    public function volunteering() {
+        return $this->hasMany(UserVolunteering::class);
+    }
+
 
     public function isAdmin() {
         return $this->hasRole('admin');

@@ -7,11 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UserRegister;
 use App\Http\Requests\Userlogin;
-use App\Http\Requests\Auth\ResetPassword;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use Illuminate\Auth\Events\PasswordReset;
+
 
 
 
@@ -91,32 +87,5 @@ class AuthController extends Controller
         return response()->json($response->json(), $response->status());
     }
 
-    public function sendResetLinkEmail(Request $request) {
-        $request->validate(['email' => 'required|email|exists:users']);
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
 
-        return $status === Password::RESET_LINK_SENT
-                    ? response()->json(['message' => __($status)])
-                    : response()->json(['message' => __($status)], 400);
-    }
-
-    public function resetPassword(ResetPassword $request) {
-        $validated = $request->validate();
-        $status = Password::reset(
-           function($user, $password) {
-            $user->forceFill([
-                'password' => bcrypt($password),
-                'remember_token' => Str::random(60),
-            ])->save();
-
-            event(new PasswordReset($user));
-           }
-        );
-
-        return $status === Password::PASSWORD_RESET
-                    ? response()->json(['message' => __($status)])
-                    : response()->json(['message' => __($status)], 400);
-    }
 }

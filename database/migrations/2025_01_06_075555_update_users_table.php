@@ -21,8 +21,8 @@ return new class extends Migration {
 
             // Thông tin cá nhân
             // $table->string('phone')->nullable(); // Số điện thoại
-            $table->string('avatar')->nullable(); // Ảnh đại diện
-            $table->string('cover_photo')->nullable(); // Ảnh bìa
+            // $table->string('avatar')->nullable(); // Ảnh đại diện
+            // $table->string('cover_photo')->nullable(); // Ảnh bìa
             $table->string('headline')->nullable(); // Tiêu đề hồ sơ (Ví dụ: Developer, Designer, ...)
             $table->text('bio')->nullable(); // Giới thiệu bản thân
             $table->string('location')->nullable(); // Địa chỉ

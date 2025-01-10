@@ -21,6 +21,5 @@ Route::middleware('api')->group(function () {
 });
 Route::middleware('auth:api')->group(function () {
     Route::get('auth/me', [AuthController::class, 'getMe']);
-
     Route::resource('users', UserController::class);
 });
