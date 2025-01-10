@@ -65,6 +65,7 @@ class AuthController extends Controller
 
     public function getMe()
     {
+        // dd('Abc');
         $user = User::with('roles')->find(Auth::id());
         return new UserResource($user);
         return response()->json(['user' => $user, 'msg' => 'Đăng nhập thành công'], 200);

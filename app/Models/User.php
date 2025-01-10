@@ -9,6 +9,90 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
+
+/**
+ *
+ *
+ * @property int $id
+ * @property string $email
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string $password
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $avatar
+ * @property string|null $cover_photo
+ * @property string|null $headline
+ * @property string|null $bio
+ * @property string|null $location
+ * @property bool $active
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserCourse> $Courses
+ * @property-read int|null $courses_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserAvatar> $avatars
+ * @property-read int|null $avatars_count
+ * @property-read \App\Models\BasicInfo|null $basicInfo
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\BlockedUser> $blockedUsers
+ * @property-read int|null $blocked_users_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Passport\Client> $clients
+ * @property-read int|null $clients_count
+ * @property-read \App\Models\ContactInfo|null $contactInfo
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserCoverImage> $coverImage
+ * @property-read int|null $cover_image_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserEducation> $educations
+ * @property-read int|null $educations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserExperience> $experiences
+ * @property-read int|null $experiences_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserRecommendation> $givenRecommendations
+ * @property-read int|null $given_recommendations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserHonorsAward> $honorsAwards
+ * @property-read int|null $honors_awards_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
+ * @property-read int|null $permissions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserProject> $projects
+ * @property-read int|null $projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserPublication> $publications
+ * @property-read int|null $publications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Connection> $receivedConnections
+ * @property-read int|null $received_connections_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserRecommendation> $receivedRecommendations
+ * @property-read int|null $received_recommendations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Role> $roles
+ * @property-read int|null $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Connection> $sentConnections
+ * @property-read int|null $sent_connections_count
+ * @property-read \App\Models\Setting|null $settings
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserSkill> $skills
+ * @property-read int|null $skills_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Passport\Token> $tokens
+ * @property-read int|null $tokens_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserVolunteering> $volunteering
+ * @property-read int|null $volunteering_count
+ * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User permission($permissions, $without = false)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User role($roles, $guard = null, $without = false)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAvatar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereBio($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCoverPhoto($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereHeadline($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLocation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutPermission($permissions)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutRole($roles, $guard = null)
+ * @mixin \Eloquent
+ */
+
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -47,10 +131,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
     /**
      * Get the attributes that should be cast.
@@ -65,7 +146,6 @@ class User extends Authenticatable
             'active' => 'boolean',
         ];
     }
-
 
     public function basicInfo()
     {
@@ -97,25 +177,30 @@ class User extends Authenticatable
         return $this->hasMany(BlockedUser::class);
     }
 
-    public function settings() {
+    public function settings()
+    {
         return $this->hasOne(Setting::class);
     }
 
-    public function notifications() {
+    public function notifications()
+    {
         return $this->hasMany(Notification::class);
     }
 
     // người gửi
-    public function sentConnections() {
+    public function sentConnections()
+    {
         return $this->hasMany(Connection::class, 'sender_id');
     }
     // người nhận
-    public function receivedConnections() {
+    public function receivedConnections()
+    {
         return $this->hasMany(Connection::class, 'receiver_id');
     }
 
     // Tất cả kết nối (gửi + nhận)
-    public function connections() {
+    public function connections()
+    {
         return $this->sentConnections->merge($this->receivedConnections);
     }
 
@@ -153,18 +238,18 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserRecommendation::class, 'giver_id');
     }
-     public function receivedRecommendations()
-   {
-       return $this->hasMany(UserRecommendation::class, 'receiver_id');
-   }
+    public function receivedRecommendations()
+    {
+        return $this->hasMany(UserRecommendation::class, 'receiver_id');
+    }
 
-    public function volunteering() {
+    public function volunteering()
+    {
         return $this->hasMany(UserVolunteering::class);
     }
 
-
-    public function isAdmin() {
+    public function isAdmin()
+    {
         return $this->hasRole('admin');
     }
-
 }

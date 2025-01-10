@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Eloquent;
 
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\Contracts\UserServiceInterface;

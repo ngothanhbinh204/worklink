@@ -3,16 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Services\UserServices;
+use App\Services\Eloquent\UserServices;
 use App\Http\Requests\User\UserStoreRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-
+use App\Models\BasicInfo;
+use App\Models\ContactInfo;
+use App\Models\UserAvatar;
+use App\Models\UserCoverImage;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -24,14 +28,15 @@ class UserController extends Controller
     {
         $this->userServices = $userServices;
     }
+    public function me() {
+        return response()->json(Auth::user());
+    }
     public function index()
     {
-
-
         $this->authorize('viewAny', User::class);
         $relations = ['basicInfo', 'contactInfo'];
         $user = $this->userServices->getAllUserWithRelations($relations);
-        return response()->json(['data' => $user, 'mess' => "admin"], 200);
+        return response()->json(['data' => $user, 'mess' => 'admin'], 200);
     }
 
     public function create()
