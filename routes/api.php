@@ -15,7 +15,6 @@ Route::post('auth/refresh', [AuthController::class, 'refresh']);
 Route::post('/oauth/token', [AccessTokenController::class, 'issueToken']);
 
 Route::post('forget-password', [ResetPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-// Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 Route::middleware('api')->group(function () {
     Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 });
