@@ -18,20 +18,30 @@ class UserProfileController extends Controller
     public function show($id)
     {
         $userProfile = $this->userProfileServices->getUserProfile($id);
-        return response()->json($userProfile);
+        return response()->json([
+            'status' => 'success',
+            'data' => $userProfile
+        ]);
     }
 
     public function update(Request $request, $id)
     {
         $updatedProfile = $this->userProfileServices->updateUserProfile($id, $request->all());
-        return response()->json($updatedProfile);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cập nhật tài khoản thành công',
+            'data' => $updatedProfile
+        ]);
     }
 
     public function store(Request $request)
     {
         $newProfile = $this->userProfileServices->createUserProfile($request->all());
-        return response()->json($newProfile, 201);
-    }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Profile created successfully',
+            'data' => $newProfile
+        ], 201);    }
 
     public function destroy($id)
     {
