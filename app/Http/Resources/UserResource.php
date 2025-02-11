@@ -25,7 +25,7 @@ class UserResource extends JsonResource
             'roles' => $this->whenLoaded('roles', function() {
                 return $this->roles->pluck('name');
             }),
-            'created_at' => $this->created_at->format('Y-m-d H:i:s'), // Định dạng ngày tháng
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'), 
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];
     }

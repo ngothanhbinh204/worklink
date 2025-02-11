@@ -21,7 +21,10 @@ Route::middleware('api')->group(function () {
 });
 Route::middleware('auth:api')->group(function () {
     Route::get('auth/me', [AuthController::class, 'getMe']);
-    Route::apiResource('users', UserController::class);
-    Route::apiResource('user-profile', UserProfileController::class);
 
+    // Admin có thể xóa user
+    Route::apiResource('users', UserController::class)->except(['destroy']);
+    Route::delete('users/{user}', [UserController::class, 'destroy'])->middleware('admin');
+
+    Route::apiResource('user-profile', UserProfileController::class);
 });

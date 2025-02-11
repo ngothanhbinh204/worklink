@@ -77,6 +77,16 @@ class UserController extends Controller
 
     public function destroy(string $id)
     {
-        //
+        if (!(Auth::user()->hasRole('admin'))) {
+            return response()->json(['message' => 'Bạn không có quyền xoá user'], 403);
+        }
+
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User không tồn tại'], 404);
+        }
+
+        $user->delete();
+        return response()->json(['message' => 'User đã bị xoá'], 200);
     }
 }
