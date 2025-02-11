@@ -18,6 +18,10 @@ class UserProfileController extends Controller
     public function show($id)
     {
         $userProfile = $this->userProfileServices->getUserProfile($id);
+        // dd($userProfile);
+        if(!$userProfile) {
+            return response()->json(['message' => 'User profile không tìm thấy'], 404);
+        }
         return response()->json([
             'status' => 'success',
             'data' => $userProfile
@@ -34,14 +38,14 @@ class UserProfileController extends Controller
         ]);
     }
 
-    public function store(Request $request)
-    {
-        $newProfile = $this->userProfileServices->createUserProfile($request->all());
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Profile created successfully',
-            'data' => $newProfile
-        ], 201);    }
+    // public function store(Request $request)
+    // {
+    //     $newProfile = $this->userProfileServices->createUserProfile($request->all());
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Profile created successfully',
+    //         'data' => $newProfile
+    //     ], 201);    }
 
     public function destroy($id)
     {

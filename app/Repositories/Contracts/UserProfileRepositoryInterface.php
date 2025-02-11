@@ -6,7 +6,7 @@ use App\Repositories\Contracts\BaseRepositoryInterface;
 
 interface UserProfileRepositoryInterface extends BaseRepositoryInterface
 {
-    public function getProfile($userId);
+    public function getProfile(int $userId);
     public function updateProfile($id, array $data);
     public function deleteProfile($id);
     public function searchProfiles($keyword);

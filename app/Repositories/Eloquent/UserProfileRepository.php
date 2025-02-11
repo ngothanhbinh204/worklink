@@ -2,9 +2,13 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Http\Resources\UserProfileResource;
 use App\Models\User;
 use App\Repositories\Contracts\UserProfileRepositoryInterface;
 use App\Repositories\Eloquent\BaseRepository;
+
+use App\DataTransferObjects\UserProfileDTO;
+
 
 class UserProfileRepository extends BaseRepository implements UserProfileRepositoryInterface
 {
@@ -15,7 +19,16 @@ class UserProfileRepository extends BaseRepository implements UserProfileReposit
 
     public function getProfile($userId)
     {
-        return $this->model->with(['basicInfo', 'contactInfo'])->find($userId);
+        $user = $this->model->with(['basicInfo', 'contactInfo'])->find($userId);
+        if (!$user) return null;
+
+        $userProfileDTO = new UserProfileDTO(
+            $user,
+            $user->basicInfo,
+            $user->contactInfo
+        );
+
+        return new UserProfileResource($userProfileDTO);
     }
 
     public function updateProfile($userId, array $data)

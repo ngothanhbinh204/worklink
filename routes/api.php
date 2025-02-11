@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ResetPasswordController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Http\Controllers\AccessTokenController;
 
@@ -20,5 +21,7 @@ Route::middleware('api')->group(function () {
 });
 Route::middleware('auth:api')->group(function () {
     Route::get('auth/me', [AuthController::class, 'getMe']);
-    Route::resource('users', UserController::class);
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('user-profile', UserProfileController::class);
+
 });

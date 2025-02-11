@@ -44,6 +44,10 @@ class BasicInfo extends Model
         'updated_at',
     ];
 
+    public function contactInfo() {
+        return $this->hasOne(ContactInfo::class, 'user_id', 'user_id');
+    }
+
     protected function casts(): array
     {
         return [
