@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->text('address')->nullable();
             $table->string('website')->nullable();
-            $table->json('social_links')->nullable();
+            $table->jsonb('social_links')->nullable();
             $table->timestamps();
 
             // Thêm ràng buộc khóa ngoại

@@ -28,7 +28,8 @@ class UserController extends Controller
     {
         $this->userServices = $userServices;
     }
-    public function me() {
+    public function me()
+    {
         return response()->json(Auth::user());
     }
     public function index()
@@ -39,9 +40,7 @@ class UserController extends Controller
         return response()->json(['data' => $user, 'mess' => 'admin'], 200);
     }
 
-    public function create()
-    {
-    }
+    public function create() {}
 
     public function store(UserStoreRequest $request)
     {
@@ -77,6 +76,9 @@ class UserController extends Controller
 
     public function destroy(string $id)
     {
+        $user = User::findOrFail($id);
+        $this->authorize('delete', $user);
+        dd("Có thẻ xóa");
         if (!(Auth::user()->hasRole('admin'))) {
             return response()->json(['message' => 'Bạn không có quyền xoá user'], 403);
         }

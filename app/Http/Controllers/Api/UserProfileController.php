@@ -4,10 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Services\Contracts\UserProfileServiceInterface;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Profile\ProfileUpdateRequest;
+use App\Http\Resources\UserProfileResource;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+use App\Models\User;
 
 class UserProfileController extends Controller
 {
+    use AuthorizesRequests;
     protected $userProfileServices;
 
     public function __construct(UserProfileServiceInterface $userProfileServices)
@@ -15,11 +22,11 @@ class UserProfileController extends Controller
         $this->userProfileServices = $userProfileServices;
     }
 
+    // Done
     public function show($id)
     {
         $userProfile = $this->userProfileServices->getUserProfile($id);
-        // dd($userProfile);
-        if(!$userProfile) {
+        if (!$userProfile) {
             return response()->json(['message' => 'User profile không tìm thấy'], 404);
         }
         return response()->json([
@@ -28,13 +35,20 @@ class UserProfileController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(ProfileUpdateRequest $request, $id)
     {
-        $updatedProfile = $this->userProfileServices->updateUserProfile($id, $request->all());
+        $user = User::findOrFail($id);
+        $this->authorize('update', $user); // check quyền
+
+        $validatedData = $request->validated();
+        $result = $this->userProfileServices->updateUserProfile($user->id, $validatedData);
+        if (isset($result['error'])) {
+            return response()->json($result['error'], 400);
+        }
         return response()->json([
             'status' => 'success',
             'message' => 'Cập nhật tài khoản thành công',
-            'data' => $updatedProfile
+            'data' => new UserProfileResource($result),
         ]);
     }
 
@@ -49,6 +63,9 @@ class UserProfileController extends Controller
 
     public function destroy($id)
     {
+        $user = User::findOrFail($id);
+        $this->authorize('deltete', $user); // check quyền
+        dd("Có thể xoa");
         $this->userProfileServices->deleteUserProfile($id);
         return response()->json(null, 204);
     }

@@ -19,7 +19,7 @@ class UserProfileRepository extends BaseRepository implements UserProfileReposit
 
     public function getProfile($userId)
     {
-        $user = $this->model->with(['basicInfo', 'contactInfo'])->find($userId);
+        $user = $this->model->with(['basicInfo', 'contactInfo'])->findOrFail($userId);
         if (!$user) return null;
 
         $userProfileDTO = new UserProfileDTO(

@@ -24,14 +24,14 @@ class UserPolicy
     }
 
     // Kiểm tra quyền xem thông tin chi tiết 1 người dùng  - nếu người dùng đó là chính họ (id) hoặc có quyền xem user
-    public function view(User $authUser, User $user )
+    public function view(User $authUser, User $user)
     {
         return $authUser->id === $user->id || $authUser->hasPermissionTo('view user');
     }
 
     public function create(User $authUser)
     {
-       return $authUser->hasPermissionTo('manage users') || $authUser->hasRole('Admin');
+        return $authUser->hasPermissionTo('manage users') || $authUser->hasRole('Admin');
     }
 
     public function update(User $authUser, User $user)
@@ -41,15 +41,11 @@ class UserPolicy
 
     public function delete(User $authUser, User $user)
     {
-        return $authUser->id === $user->id || $authUser->hasPermissionTo('delete users');
+        return $authUser->hasPermissionTo('delete users');
     }
 
     public function managerConection(User $authUser, User $user)
     {
         return $authUser->id !== $user->id;
     }
-
-
-
-
 }

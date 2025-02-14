@@ -149,12 +149,12 @@ class User extends Authenticatable
 
     public function basicInfo()
     {
-        return $this->hasOne(BasicInfo::class);
+        return $this->hasOne(BasicInfo::class, 'user_id', 'id');
     }
 
     public function contactInfo()
     {
-        return $this->hasOne(ContactInfo::class);
+        return $this->hasOne(ContactInfo::class, 'user_id', 'id');
     }
 
     public function educations()

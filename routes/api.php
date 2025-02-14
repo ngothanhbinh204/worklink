@@ -26,5 +26,9 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('users', UserController::class)->except(['destroy']);
     Route::delete('users/{user}', [UserController::class, 'destroy'])->middleware('admin');
 
-    Route::apiResource('user-profile', UserProfileController::class);
+    // Route::apiResource('user-profile', UserProfileController::class);
+});
+
+Route::middleware(['auth:api', 'role:admin,super-admin'])->group(function () {
+    Route::apiResource('user-profile', UserProfileController::class)->except(['store', 'destroy']);
 });

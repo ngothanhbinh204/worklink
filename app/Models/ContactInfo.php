@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use Illuminate\Database\Eloquent\Model;
@@ -40,7 +41,7 @@ class ContactInfo extends Model
         'phone',
         'address',
         'website',
-        'social_link',
+        'social_links',
     ];
     public function user()
     {
